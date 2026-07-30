@@ -38,7 +38,8 @@ const COMPATIBILITY: Record<string, string[]> = {
 
 export const getPort = (node: Node<WorkflowNodeData> | undefined, portId: string | null | undefined, direction: 'inputs' | 'outputs') => {
   if (!node || !portId) return undefined;
-  return node.data[direction].find((port) => port.id === portId);
+  const ports = node.data[direction] as Array<{ id: string; type: string; label: string }> | undefined;
+  return ports?.find((port) => port.id === portId);
 };
 
 export const validateConnectionTypes = (connection: Connection, nodes: Node<WorkflowNodeData>[]) => {

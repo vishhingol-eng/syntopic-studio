@@ -15,9 +15,14 @@ import { WorkflowEdgeData, EdgeKind } from './editor-types';
 type WorkflowEdgeType = Edge<WorkflowEdgeData>;
 
 const KIND_STROKE: Record<EdgeKind, string> = {
-  data:      '#60a5fa',  // blue-400
-  control:   '#f59e0b',  // amber-400
-  reference: '#a78bfa',  // violet-400
+  data:        '#60a5fa',  // blue-400
+  control:     '#f59e0b',  // amber-400
+  reference:   '#a78bfa',  // violet-400
+  execution:   '#94a3b8',  // slate-400
+  memory:      '#34d399',  // emerald-400
+  knowledge:   '#38bdf8',  // sky-400
+  conditional: '#f472b6',  // pink-400
+  event:       '#fb923c',  // orange-400
 };
 
 // FIX: was EdgeProps<WorkflowEdgeData> — now EdgeProps<WorkflowEdgeType>

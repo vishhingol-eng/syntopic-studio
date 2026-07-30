@@ -40,7 +40,7 @@ const edgeTypes: EdgeTypes = {
   reference: WorkflowEdgeComponent,
 };
 
-export function GraphCanvas() {
+export default function GraphCanvas() {
   const nodes         = useEditorStore((s) => s.nodes);
   const edges         = useEditorStore((s) => s.edges);
   const onNodesChange = useEditorStore((s) => s.onNodesChange);

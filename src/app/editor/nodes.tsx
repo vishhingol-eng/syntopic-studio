@@ -32,8 +32,8 @@ function WorkflowNode({ id, data }: NodeProps<WorkflowNodeType>) {
   const selectNode   = useEditorStore((s) => s.selectNode);
   const selectedId   = useEditorStore((s) => s.selectedNodeId);
   const isSelected   = selectedId === id;
-  const colorClass   = KIND_COLORS[data.kind] ?? 'bg-zinc-800 border-zinc-500';
-  const icon         = KIND_ICONS[data.kind]  ?? '?';
+  const colorClass   = (data.kind ? KIND_COLORS[data.kind] : undefined) ?? 'bg-zinc-800 border-zinc-500';
+  const icon         = (data.kind ? KIND_ICONS[data.kind] : undefined) ?? '?';
 
   return (
     <div

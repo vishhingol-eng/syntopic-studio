@@ -112,10 +112,10 @@ export const buildNodeData = (type: WorkflowNodeType, overrides: Partial<Workflo
     inputs: preset.inputs,
     outputs: preset.outputs,
     config: {},
-    runtime: { status: 'idle' },
+    runtime: { status: 'idle' as const },
     ...preset.defaults,
     ...overrides,
-  };
+  } as WorkflowNodeData;
 };
 
 export const NODE_LIBRARY_GROUPS: Array<{ category: NodeCategory; label: string; types: WorkflowNodeType[] }> = [

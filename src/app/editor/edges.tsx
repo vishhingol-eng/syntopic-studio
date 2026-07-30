@@ -1,53 +1,67 @@
-import { BaseEdge, EdgeLabelRenderer, getBezierPath, type EdgeProps } from '@xyflow/react';
-import type { WorkflowEdgeData } from './editor-types';
+import { memo } from 'react';
+// FIX: In @xyflow/react v12, EdgeProps<T> expects T to be a full Edge<Data> type,
+// NOT just the Data type. Define WorkflowEdgeType = Edge<WorkflowEdgeData>
+// and use EdgeProps<WorkflowEdgeType>.
+import {
+  BaseEdge,
+  EdgeLabelRenderer,
+  getStraightPath,
+  type Edge,
+  type EdgeProps,
+} from '@xyflow/react';
+import { WorkflowEdgeData, EdgeKind } from './editor-types';
 
-const EDGE_STYLE: Record<WorkflowEdgeData['kind'], { stroke: string; label: string }> = {
-  execution: { stroke: '#6C8CFF', label: 'exec' },
-  data: { stroke: '#C7D0DE', label: 'data' },
-  memory: { stroke: '#37C98A', label: 'memory' },
-  knowledge: { stroke: '#36D6C0', label: 'knowledge' },
-  conditional: { stroke: '#B59CFF', label: 'branch' },
-  event: { stroke: '#E0A44B', label: 'event' },
+// FIX: Full edge type alias — required by EdgeProps<T> in v12
+type WorkflowEdgeType = Edge<WorkflowEdgeData>;
+
+const KIND_STROKE: Record<EdgeKind, string> = {
+  data:      '#60a5fa',  // blue-400
+  control:   '#f59e0b',  // amber-400
+  reference: '#a78bfa',  // violet-400
 };
 
-export function WorkflowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, markerEnd, style, data, selected }: EdgeProps<WorkflowEdgeData>) {
-  const [path, labelX, labelY] = getBezierPath({
+// FIX: was EdgeProps<WorkflowEdgeData> — now EdgeProps<WorkflowEdgeType>
+function WorkflowEdge({
+  id,
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  data,
+}: EdgeProps<WorkflowEdgeType>) {
+  const [edgePath, labelX, labelY] = getStraightPath({
     sourceX,
     sourceY,
-    sourcePosition,
     targetX,
     targetY,
-    targetPosition,
   });
 
-  const kind = data?.kind ?? 'execution';
-  const tone = EDGE_STYLE[kind];
-  const dashed = kind === 'conditional' || kind === 'event' || kind === 'data';
+  const stroke = KIND_STROKE[data?.kind ?? 'data'] ?? '#60a5fa';
 
   return (
     <>
       <BaseEdge
         id={id}
-        path={path}
-        markerEnd={markerEnd}
-        style={{
-          ...style,
-          stroke: tone.stroke,
-          strokeWidth: selected ? 3.2 : 2.2,
-          strokeDasharray: dashed ? '8 6' : undefined,
-          opacity: selected ? 1 : 0.88,
-        }}
+        path={edgePath}
+        style={{ stroke, strokeWidth: 1.5 }}
+        markerEnd="url(#arrow)"
       />
-      {data?.label || selected ? (
+      {data?.label && (
         <EdgeLabelRenderer>
           <div
-            className="nodrag nopan pointer-events-none absolute rounded-full border border-white/8 bg-[rgba(18,25,35,0.95)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-200 shadow-[0_12px_30px_rgba(0,0,0,0.28)]"
-            style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}
+            style={{
+              position: 'absolute',
+              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+              pointerEvents: 'all',
+            }}
+            className="text-[10px] text-zinc-300 bg-zinc-900 px-1 rounded"
           >
-            {data?.label ?? tone.label}
+            {data.label}
           </div>
         </EdgeLabelRenderer>
-      ) : null}
+      )}
     </>
   );
 }
+
+export const WorkflowEdgeComponent = memo(WorkflowEdge);

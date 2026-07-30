@@ -4,6 +4,7 @@ import {
   INITIAL_GRAPH_EDGES,
   INITIAL_GRAPH_NODES,
   NODE_PRESET_MAP,
+  buildNodeData,
   type NodePreset,
 } from './node-presets';
 import type {
@@ -140,7 +141,20 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       id: crypto.randomUUID(),
       type: 'workflowNode',
       position,
-      data: buildNodeData(type),
+      data: {
+        nodeType: preset.type,
+        category: preset.category,
+        title: preset.title,
+        description: preset.description,
+        icon: preset.icon,
+        accent: preset.accent,
+        shape: preset.shape,
+        inputs: preset.inputs,
+        outputs: preset.outputs,
+        config: {},
+        runtime: { status: 'idle' },
+        ...preset.defaults,
+      },
     };
 
     set((state) => ({

@@ -77,7 +77,7 @@ function useKeyboardShortcuts() {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [deleteSelection, pauseWorkflow, redo, resumeWorkflow, runWorkflow, setActiveConsoleTab, stepWorkflow, undo]);
+  }, [clearEdgeSelection, clearSelection, deleteSelection, pauseWorkflow, redo, resumeWorkflow, runWorkflow, setActiveConsoleTab, stepWorkflow, undo]);
 }
 
 export function GraphEditor() {

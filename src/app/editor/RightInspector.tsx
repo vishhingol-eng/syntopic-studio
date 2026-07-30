@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { useEditorStore } from './editor-store';
 import type { WorkflowNodeData } from './editor-types';
+import { SegmentedTabs } from '@/shared/ui';
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children }: { children: ReactNode }) {
   return <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">{children}</div>;
 }
 
@@ -74,18 +75,12 @@ export default function RightInspector() {
       </div>
 
       <div className="border-b border-white/6 px-3 py-3">
-        <div className="grid grid-cols-2 gap-2">
-          {inspectorTabs.map((tab) => (
-            <button
-              key={tab}
-              type="button"
-              onClick={() => setActiveInspectorTab(tab)}
-              className={`rounded-xl px-3 py-2 text-[12px] font-semibold capitalize transition ${activeInspectorTab === tab ? 'bg-accent/16 text-white' : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'}`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+        <SegmentedTabs
+          value={activeInspectorTab}
+          options={inspectorTabs.map((tab) => ({ value: tab, label: tab.charAt(0).toUpperCase() + tab.slice(1) }))}
+          onChange={setActiveInspectorTab}
+          className="grid-cols-2"
+        />
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">

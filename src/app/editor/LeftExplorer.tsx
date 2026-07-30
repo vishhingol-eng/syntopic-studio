@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type DragEvent } from 'react';
 import { NODE_LIBRARY_GROUPS, NODE_PRESET_MAP } from './node-presets';
 import { useEditorStore } from './editor-store';
 import type { ExplorerTab, WorkflowNodeType } from './editor-types';
+import { SegmentedTabs } from '@/shared/ui';
 
 const explorerItems: Array<{ label: string; tab: ExplorerTab; detail: string }> = [
   { label: 'Projects', tab: 'projects', detail: '3 active' },
@@ -51,17 +52,18 @@ export default function LeftExplorer() {
       <div className="border-b border-white/6 px-4 py-4">
         <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Explorer</div>
         <div className="mt-1 text-[16px] font-semibold text-slate-100">Projects & workflows</div>
-        <div className="mt-3 grid grid-cols-2 gap-2 rounded-2xl border border-white/6 bg-white/[0.03] p-1">
-          {(['projects', 'workflows', 'agents', 'templates'] as ExplorerTab[]).map((tab) => (
-            <button
-              key={tab}
-              type="button"
-              onClick={() => setActiveExplorerTab(tab)}
-              className={`rounded-xl px-3 py-2 text-[12px] font-semibold capitalize transition ${activeExplorerTab === tab ? 'bg-accent/16 text-white' : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'}`}
-            >
-              {tab}
-            </button>
-          ))}
+        <div className="mt-3">
+          <SegmentedTabs
+            value={activeExplorerTab}
+            options={[
+              { value: 'projects', label: 'Projects' },
+              { value: 'workflows', label: 'Workflows' },
+              { value: 'agents', label: 'Agents' },
+              { value: 'templates', label: 'Templates' },
+            ]}
+            onChange={setActiveExplorerTab}
+            className="grid-cols-2"
+          />
         </div>
       </div>
 

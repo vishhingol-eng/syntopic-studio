@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useEditorStore } from './editor-store';
 import type { ConsoleTab } from './editor-types';
+import { SegmentedTabs } from '@/shared/ui';
 
 const tabs: ConsoleTab[] = ['console', 'timeline', 'logs', 'events', 'errors', 'performance', 'cost', 'tokens', 'debug'];
 
@@ -31,17 +32,13 @@ export default function BottomConsole() {
   return (
     <footer className="flex h-[280px] min-h-0 flex-col border-t border-white/6 bg-[rgba(14,20,28,0.98)] shadow-[0_-12px_30px_rgba(0,0,0,0.24)]">
       <div className="flex items-center justify-between border-b border-white/6 px-4 py-3">
-        <div className="flex min-w-0 items-center gap-2 overflow-x-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              type="button"
-              onClick={() => setActiveConsoleTab(tab)}
-              className={`rounded-xl px-3 py-2 text-[12px] font-semibold capitalize transition ${activeConsoleTab === tab ? 'bg-accent/16 text-white' : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'}`}
-            >
-              {tab}
-            </button>
-          ))}
+        <div className="min-w-0 flex-1">
+          <SegmentedTabs
+            value={activeConsoleTab}
+            options={tabs.map((tab) => ({ value: tab, label: tab.charAt(0).toUpperCase() + tab.slice(1) }))}
+            onChange={setActiveConsoleTab}
+            className="grid-cols-9 overflow-x-auto"
+          />
         </div>
 
         <div className="flex items-center gap-3 text-[12px] text-slate-400">

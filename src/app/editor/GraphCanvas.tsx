@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, type DragEvent } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -12,7 +12,7 @@ import {
 } from '@xyflow/react';
 import { useEditorStore } from './editor-store';
 import { NODE_PRESET_MAP } from './node-presets';
-import type { WorkflowEdgeData, WorkflowNodeData } from './editor-types';
+import type { WorkflowEdgeData, WorkflowNodeData, WorkflowNodeType } from './editor-types';
 import { WorkflowNode } from './nodes';
 import { WorkflowEdge } from './edges';
 
